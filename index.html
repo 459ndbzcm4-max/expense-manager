@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>مدير المصاريف</title>
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#17212b;--muted:#667085;--brand:#0f766e;--line:#e4e7ec;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
+main{max-width:760px;margin:auto;padding:16px 0 40px}h1{font-size:25px;margin:8px 0 4px}.sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card,section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.metric{font-size:12px;color:var(--muted)}.amount{font-size:22px;font-weight:750;margin-top:6px;overflow-wrap:anywhere}.green{color:#067647}.red{color:var(--red)}
+h2{font-size:18px;margin:0 0 12px}label{display:block;font-size:13px;color:var(--muted);margin:9px 0 5px}input,select,button{font:inherit}input,select{width:100%;padding:12px;border:1px solid #cfd4dc;border-radius:10px;background:#fff;color:var(--ink)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.wide{grid-column:1/-1}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button,.filebtn{border:0;border-radius:10px;padding:11px 14px;background:var(--brand);color:white;font-weight:650;cursor:pointer;text-align:center}.secondary{background:#e8f3f2;color:#075e59}.danger{background:#fff0ef;color:var(--red)}.muted{color:var(--muted);font-size:13px}.transaction{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding:12px 0}.transaction:first-child{border-top:0}.txinfo{flex:1;min-width:0}.txname{font-weight:650;overflow-wrap:anywhere}.txmeta{font-size:12px;color:var(--muted);margin-top:4px}.txamount{font-weight:750;white-space:nowrap}.txbuttons{display:flex;gap:5px;margin-top:7px}.txbuttons button{padding:6px 9px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:22px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar>*{flex:1}.hidden{display:none!important}
+@media(max-width:420px){.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}.amount{font-size:20px}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>مدير المصاريف</h1><div class="sub">سجّل دخلك ومصروفاتك وتابع رصيدك على جهازك.</div></header>
+<div class="cards">
+<div class="card"><div class="metric">الرصيد الحالي</div><div id="balance" class="amount">0.00</div></div>
+<div class="card"><div class="metric">إجمالي الإيرادات</div><div id="income" class="amount green">0.00</div></div>
+<div class="card"><div class="metric">إجمالي المصاريف</div><div id="expense" class="amount red">0.00</div></div>
+<div class="card"><div class="metric">عدد العمليات</div><div id="count" class="amount">0</div></div>
+</div>
+<section>
+<h2 id="formTitle">إضافة عملية</h2>
+<form id="txForm">
+<input type="hidden" id="editId">
+<div class="formgrid">
+<div><label for="kind">نوع العملية</label><select id="kind"><option value="expense">مصروف</option><option value="income">إيراد</option></select></div>
+<div><label for="amountInput">المبلغ</label><input id="amountInput" type="number" min="0.01" step="0.01" required placeholder="0.00" inputmode="decimal"></div>
+<div><label for="category">التصنيف</label><select id="category"><option>راتب / دخل</option><option>طعام ومشروبات</option><option>مواصلات</option><option>فواتير واشتراكات</option><option>تسوق وترفيه</option><option>أخرى</option></select></div>
+<div><label for="wallet">المحفظة</label><select id="wallet"><option>الرئيسية (كاش)</option><option>البنك</option></select></div>
+<div class="wide"><label for="note">الوصف</label><input id="note" maxlength="120" placeholder="مثال: مشتريات المنزل"></div>
+<div><label for="date">التاريخ</label><input id="date" type="date" required></div>
+</div>
+<div class="actions"><button type="submit" id="saveBtn">حفظ العملية</button><button type="button" class="secondary hidden" id="cancelEdit">إلغاء التعديل</button></div>
+</form>
+</section>
+<section>
+<h2>سجل العمليات</h2>
+<div class="formgrid">
+<div><label for="search">بحث</label><input id="search" placeholder="ابحث في الوصف أو التصنيف"></div>
+<div><label for="filterKind">تصفية النوع</label><select id="filterKind"><option value="all">الكل</option><option value="income">الإيرادات</option><option value="expense">المصاريف</option></select></div>
+</div>
+<div id="transactions"></div>
+</section>
+<section>
+<h2>النسخ الاحتياطي</h2>
+<p class="muted">تُحفظ البيانات محليًا في هذا المتصفح. احتفظ بنسخة احتياطية دوريًا، ولا تمسح بيانات Safari قبل تصديرها.</p>
+<div class="toolbar">
+<button type="button" class="secondary" id="exportJson">تنزيل نسخة احتياطية</button>
+<button type="button" class="secondary" id="exportCsv">تصدير CSV لبرنامج Excel</button>
+<label class="filebtn" for="importFile">استعادة نسخة</label><input class="hidden" id="importFile" type="file" accept=".json,application/json">
+</div>
+</section>
+<p class="muted">هذا التطبيق لا يرسل بياناتك المالية إلى خادم. البيانات محفوظة في المتصفح الحالي فقط؛ صدّر نسخة احتياطية للاحتفاظ بها.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='expenseManagerDataV1';
+let records=[];
+try{records=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(records))records=[]}catch(e){records=[]}
+$('date').value=new Date().toISOString().slice(0,10);
+const money=n=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+function persist(){localStorage.setItem(KEY,JSON.stringify(records));render()}
+function resetForm(){$('txForm').reset();$('editId').value='';$('date').value=new Date().toISOString().slice(0,10);$('formTitle').textContent='إضافة عملية';$('saveBtn').textContent='حفظ العملية';$('cancelEdit').classList.add('hidden')}
+$('txForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amountInput').value);if(!(amount>0))return;const id=$('editId').value;const item={id:id||String(Date.now()),kind:$('kind').value,amount,category:$('category').value,wallet:$('wallet').value,note:$('note').value.trim(),date:$('date').value};if(id)records=records.map(r=>r.id===id?item:r);else records.unshift(item);persist();resetForm()});
+$('cancelEdit').onclick=resetForm;
+function edit(id){const r=records.find(x=>x.id===id);if(!r)return;$('editId').value=r.id;$('kind').value=r.kind;$('amountInput').value=r.amount;$('category').value=r.category;$('wallet').value=r.wallet;$('note').value=r.note;$('date').value=r.date;$('formTitle').textContent='تعديل العملية';$('saveBtn').textContent='حفظ التعديل';$('cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+function remove(id){if(confirm('هل تريد حذف هذه العملية؟')){records=records.filter(r=>r.id!==id);persist()}}
+function render(){const inc=records.filter(r=>r.kind==='income').reduce((s,r)=>s+r.amount,0),exp=records.filter(r=>r.kind==='expense').reduce((s,r)=>s+r.amount,0);$('balance').textContent=money(inc-exp);$('income').textContent=money(inc);$('expense').textContent=money(exp);$('count').textContent=records.length;
+const q=$('search').value.trim().toLowerCase(),f=$('filterKind').value;const list=records.filter(r=>(f==='all'||r.kind===f)&&[r.note,r.category,r.wallet,r.date].some(v=>String(v||'').toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));const box=$('transactions');box.innerHTML='';if(!list.length){box.innerHTML='<div class="empty">لا توجد عمليات مطابقة حتى الآن.</div>';return}
+for(const r of list){const el=document.createElement('div');el.className='transaction';const info=document.createElement('div');info.className='txinfo';const name=document.createElement('div');name.className='txname';name.textContent=r.note||r.category;const meta=document.createElement('div');meta.className='txmeta';meta.textContent=`${r.date} · ${r.category} · ${r.wallet}`;const buttons=document.createElement('div');buttons.className='txbuttons';const eb=document.createElement('button');eb.className='secondary';eb.textContent='تعديل';eb.onclick=()=>edit(r.id);const db=document.createElement('button');db.className='danger';db.textContent='حذف';db.onclick=()=>remove(r.id);buttons.append(eb,db);info.append(name,meta,buttons);const val=document.createElement('div');val.className='txamount '+(r.kind==='income'?'green':'red');val.textContent=(r.kind==='income'?'+':'−')+money(r.amount);el.append(info,val);box.append(el)}
+}
+$('search').addEventListener('input',render);$('filterKind').addEventListener('change',render);
+function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('exportJson').onclick=()=>download('expense-manager-backup.json',JSON.stringify({version:1,exportedAt:new Date().toISOString(),records},null,2),'application/json;charset=utf-8');
+$('exportCsv').onclick=()=>{const rows=[['التاريخ','النوع','المبلغ','التصنيف','المحفظة','الوصف'],...records.map(r=>[r.date,r.kind==='income'?'إيراد':'مصروف',r.amount,r.category,r.wallet,r.note])];const csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');download('expense-manager.csv',csv,'text/csv;charset=utf-8')};
+$('importFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());const arr=Array.isArray(data)?data:data.records;if(!Array.isArray(arr))throw Error();if(confirm('ستُستبدل العمليات الحالية بالنسخة المختارة. هل تريد المتابعة؟')){records=arr;persist();resetForm();alert('تمت استعادة النسخة.')}}catch(err){alert('تعذر قراءة الملف. اختر نسخة JSON صالحة من هذا التطبيق.')}e.target.value=''});
+render();
+</script>
+</body></html>
