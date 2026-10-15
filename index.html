@@ -3,82 +3,158 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f766e">
-<title>مدير المصاريف</title>
+<meta name="theme-color" content="#173b5e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="مدير المصاريف">
+<title>مدير المصاريف المتقدم</title>
 <style>
-:root{--bg:#f3f6f8;--card:#fff;--ink:#17212b;--muted:#667085;--brand:#0f766e;--line:#e4e7ec;--red:#b42318}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
-main{max-width:760px;margin:auto;padding:16px 0 40px}h1{font-size:25px;margin:8px 0 4px}.sub{color:var(--muted);font-size:14px;margin-bottom:18px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card,section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.metric{font-size:12px;color:var(--muted)}.amount{font-size:22px;font-weight:750;margin-top:6px;overflow-wrap:anywhere}.green{color:#067647}.red{color:var(--red)}
-h2{font-size:18px;margin:0 0 12px}label{display:block;font-size:13px;color:var(--muted);margin:9px 0 5px}input,select,button{font:inherit}input,select{width:100%;padding:12px;border:1px solid #cfd4dc;border-radius:10px;background:#fff;color:var(--ink)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.wide{grid-column:1/-1}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button,.filebtn{border:0;border-radius:10px;padding:11px 14px;background:var(--brand);color:white;font-weight:650;cursor:pointer;text-align:center}.secondary{background:#e8f3f2;color:#075e59}.danger{background:#fff0ef;color:var(--red)}.muted{color:var(--muted);font-size:13px}.transaction{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding:12px 0}.transaction:first-child{border-top:0}.txinfo{flex:1;min-width:0}.txname{font-weight:650;overflow-wrap:anywhere}.txmeta{font-size:12px;color:var(--muted);margin-top:4px}.txamount{font-weight:750;white-space:nowrap}.txbuttons{display:flex;gap:5px;margin-top:7px}.txbuttons button{padding:6px 9px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:22px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar>*{flex:1}.hidden{display:none!important}
-@media(max-width:420px){.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}.amount{font-size:20px}}
+:root{--navy:#173b5e;--blue:#246b9e;--green:#168354;--red:#c43d45;--bg:#f2f5f8;--card:#fff;--muted:#687787;--line:#dfe6ed;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#192735;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);font-size:16px}
+main{width:min(760px,100%);margin:auto;padding:16px 14px 40px}header{background:linear-gradient(135deg,#246b9e,#173b5e);color:white;border-radius:22px;padding:22px 18px;margin-bottom:14px;box-shadow:0 8px 24px #173b5e20}
+header h1{font-size:1.4rem;margin:0 0 6px}header p{margin:0;opacity:.88;font-size:.92rem}
+.balance{margin-top:18px;background:#ffffff1a;border:1px solid #ffffff2c;border-radius:15px;padding:14px;text-align:center}.balance small{display:block;opacity:.85}.balance strong{font-size:1.8rem;display:block;margin-top:4px;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;box-shadow:0 3px 12px #132d4310}.stat span{display:block;color:var(--muted);font-size:.85rem;margin-bottom:7px}.stat strong{font-size:1.12rem;font-variant-numeric:tabular-nums}.income{color:var(--green)}.expense{color:var(--red)}
+.panel{margin-bottom:14px}.panel h2{font-size:1.08rem;margin:0 0 13px;color:var(--navy)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;font-size:.88rem;font-weight:650;margin:0 0 6px}
+input,select,textarea{width:100%;font:inherit;border:1px solid #cfd9e2;border-radius:11px;background:white;padding:12px;color:#172635;min-height:46px}input:focus,select:focus,textarea:focus{outline:2px solid #78b9e7;outline-offset:1px}button,.button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:12px 14px;min-height:44px;cursor:pointer;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--green);color:white;width:100%;margin-top:12px}.secondary{background:#e8f2fa;color:#1f5f8e}.danger{background:#fff0f0;color:#a72d35}.neutral{background:#edf1f5;color:#33495b}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions button{width:100%}.wallets{display:grid;gap:8px}.wallet{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fbfcfd}.wallet span{color:var(--muted);font-size:.85rem}.wallet strong{display:block;margin-top:3px}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.toolbar .full{grid-column:1/-1}.transaction{border:1px solid var(--line);border-radius:13px;padding:12px;margin-top:9px;background:#fff;display:flex;gap:10px;align-items:flex-start}.txmain{flex:1;min-width:0}.txline{display:flex;justify-content:space-between;gap:8px;align-items:center}.txamount{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}.txmeta{color:var(--muted);font-size:.82rem;margin-top:7px;line-height:1.5;overflow-wrap:anywhere}.tag{display:inline-block;background:#e9f3fb;color:#245d88;border-radius:7px;padding:3px 7px;font-size:.77rem;margin-left:4px}.txbuttons{display:flex;gap:6px;flex-direction:column}.txbuttons button{min-height:34px;padding:6px 9px;font-size:.82rem}.empty{color:var(--muted);text-align:center;padding:22px 8px}.small{font-size:.82rem;color:var(--muted);line-height:1.6}.notice{padding:11px;border-radius:10px;background:#fff8e7;color:#76551b;font-size:.85rem;line-height:1.6;margin-top:10px}.hidden{display:none!important}.foot{text-align:center;color:var(--muted);font-size:.8rem;padding:10px}
+@media(max-width:390px){main{padding-inline:10px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.txline{align-items:flex-start;flex-direction:column}.stat strong{font-size:1rem}}
 </style>
 </head>
 <body>
 <main>
-<header><h1>مدير المصاريف</h1><div class="sub">سجّل دخلك ومصروفاتك وتابع رصيدك على جهازك.</div></header>
-<div class="cards">
-<div class="card"><div class="metric">الرصيد الحالي</div><div id="balance" class="amount">0.00</div></div>
-<div class="card"><div class="metric">إجمالي الإيرادات</div><div id="income" class="amount green">0.00</div></div>
-<div class="card"><div class="metric">إجمالي المصاريف</div><div id="expense" class="amount red">0.00</div></div>
-<div class="card"><div class="metric">عدد العمليات</div><div id="count" class="amount">0</div></div>
-</div>
-<section>
-<h2 id="formTitle">إضافة عملية</h2>
-<form id="txForm">
-<input type="hidden" id="editId">
-<div class="formgrid">
-<div><label for="kind">نوع العملية</label><select id="kind"><option value="expense">مصروف</option><option value="income">إيراد</option></select></div>
-<div><label for="amountInput">المبلغ</label><input id="amountInput" type="number" min="0.01" step="0.01" required placeholder="0.00" inputmode="decimal"></div>
-<div><label for="category">التصنيف</label><select id="category"><option>راتب / دخل</option><option>طعام ومشروبات</option><option>مواصلات</option><option>فواتير واشتراكات</option><option>تسوق وترفيه</option><option>أخرى</option></select></div>
-<div><label for="wallet">المحفظة</label><select id="wallet"><option>الرئيسية (كاش)</option><option>البنك</option></select></div>
-<div class="wide"><label for="note">الوصف</label><input id="note" maxlength="120" placeholder="مثال: مشتريات المنزل"></div>
-<div><label for="date">التاريخ</label><input id="date" type="date" required></div>
-</div>
-<div class="actions"><button type="submit" id="saveBtn">حفظ العملية</button><button type="button" class="secondary hidden" id="cancelEdit">إلغاء التعديل</button></div>
-</form>
+<header>
+  <h1>مدير المصاريف المتقدم</h1>
+  <p>متابعة أموالك ومحافظك بالدينار الأردني</p>
+  <div class="balance"><small>الرصيد الكلي</small><strong id="balance">٠٫٠٠ د.أ</strong></div>
+</header>
+<section class="stats">
+  <div class="stat"><span>إجمالي الإيرادات</span><strong class="income" id="totalIncome">٠٫٠٠ د.أ</strong></div>
+  <div class="stat"><span>إجمالي المصاريف</span><strong class="expense" id="totalExpense">٠٫٠٠ د.أ</strong></div>
 </section>
-<section>
-<h2>سجل العمليات</h2>
-<div class="formgrid">
-<div><label for="search">بحث</label><input id="search" placeholder="ابحث في الوصف أو التصنيف"></div>
-<div><label for="filterKind">تصفية النوع</label><select id="filterKind"><option value="all">الكل</option><option value="income">الإيرادات</option><option value="expense">المصاريف</option></select></div>
-</div>
-<div id="transactions"></div>
+
+<section class="panel">
+  <h2>إضافة معاملة</h2>
+  <form id="txForm">
+    <input type="hidden" id="editId">
+    <div class="fields">
+      <div class="field"><label for="type">نوع المعاملة</label><select id="type"><option value="expense">مصروف (−)</option><option value="income">إيراد (+)</option></select></div>
+      <div class="field"><label for="amount">المبلغ بالدينار</label><input id="amount" type="number" min="0.001" step="0.001" inputmode="decimal" placeholder="مثال: 12.50" required></div>
+      <div class="field"><label for="category">التصنيف</label><select id="category"><option>راتب / دخل</option><option>طعام ومشروبات</option><option>مواصلات</option><option>فواتير واشتراكات</option><option>تسوق وترفيه</option><option>أخرى</option></select></div>
+      <div class="field"><label for="walletSelect">المحفظة</label><select id="walletSelect"></select></div>
+      <div class="field full"><label for="txDate">التاريخ والوقت</label><input id="txDate" type="datetime-local" required></div>
+      <div class="field full"><label for="notes">ملاحظات (اختياري)</label><input id="notes" type="text" maxlength="250" placeholder="تفاصيل إضافية"></div>
+    </div>
+    <button class="primary" id="saveTx" type="submit">حفظ المعاملة</button>
+    <button class="neutral hidden" id="cancelEdit" type="button" style="width:100%;margin-top:8px">إلغاء التعديل</button>
+  </form>
 </section>
-<section>
-<h2>النسخ الاحتياطي</h2>
-<p class="muted">تُحفظ البيانات محليًا في هذا المتصفح. احتفظ بنسخة احتياطية دوريًا، ولا تمسح بيانات Safari قبل تصديرها.</p>
-<div class="toolbar">
-<button type="button" class="secondary" id="exportJson">تنزيل نسخة احتياطية</button>
-<button type="button" class="secondary" id="exportCsv">تصدير CSV لبرنامج Excel</button>
-<label class="filebtn" for="importFile">استعادة نسخة</label><input class="hidden" id="importFile" type="file" accept=".json,application/json">
-</div>
+
+<section class="panel">
+  <h2>إدارة المحافظ</h2>
+  <form id="walletForm" class="fields">
+    <div class="field full"><label for="walletName">اسم المحفظة الجديدة</label><input id="walletName" maxlength="100" placeholder="مثال: محفظة السفر" required></div>
+    <div class="field full"><button class="secondary" type="submit" style="width:100%">＋ إضافة محفظة</button></div>
+  </form>
+  <div class="wallets" id="walletsSummary" style="margin-top:12px"></div>
+  <p class="small">لا يمكن حذف محفظة مرتبطة بمعاملات؛ احذف معاملاتها أو انقلها أولًا بعد تعديلها.</p>
 </section>
-<p class="muted">هذا التطبيق لا يرسل بياناتك المالية إلى خادم. البيانات محفوظة في المتصفح الحالي فقط؛ صدّر نسخة احتياطية للاحتفاظ بها.</p>
+
+<section class="panel">
+  <h2>سجل المعاملات</h2>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="بحث بالتصنيف أو الملاحظات" aria-label="بحث">
+    <select id="filterType" aria-label="تصفية حسب النوع"><option value="all">كل الأنواع</option><option value="income">الإيرادات</option><option value="expense">المصاريف</option></select>
+    <select id="filterWallet" aria-label="تصفية حسب المحفظة"><option value="all">كل المحافظ</option></select>
+    <button class="neutral" id="clearFilters" type="button">مسح التصفية</button>
+  </div>
+  <div id="list"></div>
+</section>
+
+<section class="panel">
+  <h2>النسخ الاحتياطي والتصدير</h2>
+  <div class="actions">
+    <button class="secondary" id="backupBtn" type="button">حفظ نسخة احتياطية</button>
+    <button class="secondary" id="mergeBtn" type="button">دمج نسخة دون استبدال</button>
+    <button class="secondary" id="restoreBtn" type="button">استعادة نسخة</button>
+    <button class="secondary" id="csvBtn" type="button">تصدير Excel (CSV)</button>
+    <button class="danger" id="clearBtn" type="button">مسح كل المعاملات</button>
+  </div>
+  <input class="hidden" id="restoreFile" type="file" accept=".json,application/json">
+  <input class="hidden" id="mergeFile" type="file" accept=".json,application/json">
+  <div class="notice">بياناتك تُحفظ محليًا في مساحة التخزين الخاصة بطريقة الفتح هذه. قد تختلف بيانات Safari عن بيانات أيقونة الشاشة الرئيسية. استخدم «دمج نسخة دون استبدال» لنقل عمليات من نسخة أخرى مع الاحتفاظ بالعمليات الحالية. النسخ الاحتياطية لا تُرفع تلقائيًا إلى السحابة.</div>
+  <p class="small">تصدير CSV متوافق مع Excel ويتضمن ترميز UTF‑8 للنص العربي. إذا لم يفتح مباشرةً في Excel، استورد الملف واختر UTF‑8 عند تحديد الترميز.</p>
+</section>
+<div class="foot">مدير المصاريف · الإصدار التجريبي المحلي</div>
 </main>
 <script>
+(() => {
+'use strict';
+const KEY='expenseManagerArabic.v1';
+const defaults={version:1,wallets:[{id:'w-cash',name:'الرئيسية (كاش)'},{id:'w-bank',name:'البنك'}],transactions:[]};
+let data=loadData();
 const $=id=>document.getElementById(id);
-const KEY='expenseManagerDataV1';
-let records=[];
-try{records=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(records))records=[]}catch(e){records=[]}
-$('date').value=new Date().toISOString().slice(0,10);
-const money=n=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-function persist(){localStorage.setItem(KEY,JSON.stringify(records));render()}
-function resetForm(){$('txForm').reset();$('editId').value='';$('date').value=new Date().toISOString().slice(0,10);$('formTitle').textContent='إضافة عملية';$('saveBtn').textContent='حفظ العملية';$('cancelEdit').classList.add('hidden')}
-$('txForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amountInput').value);if(!(amount>0))return;const id=$('editId').value;const item={id:id||String(Date.now()),kind:$('kind').value,amount,category:$('category').value,wallet:$('wallet').value,note:$('note').value.trim(),date:$('date').value};if(id)records=records.map(r=>r.id===id?item:r);else records.unshift(item);persist();resetForm()});
-$('cancelEdit').onclick=resetForm;
-function edit(id){const r=records.find(x=>x.id===id);if(!r)return;$('editId').value=r.id;$('kind').value=r.kind;$('amountInput').value=r.amount;$('category').value=r.category;$('wallet').value=r.wallet;$('note').value=r.note;$('date').value=r.date;$('formTitle').textContent='تعديل العملية';$('saveBtn').textContent='حفظ التعديل';$('cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
-function remove(id){if(confirm('هل تريد حذف هذه العملية؟')){records=records.filter(r=>r.id!==id);persist()}}
-function render(){const inc=records.filter(r=>r.kind==='income').reduce((s,r)=>s+r.amount,0),exp=records.filter(r=>r.kind==='expense').reduce((s,r)=>s+r.amount,0);$('balance').textContent=money(inc-exp);$('income').textContent=money(inc);$('expense').textContent=money(exp);$('count').textContent=records.length;
-const q=$('search').value.trim().toLowerCase(),f=$('filterKind').value;const list=records.filter(r=>(f==='all'||r.kind===f)&&[r.note,r.category,r.wallet,r.date].some(v=>String(v||'').toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));const box=$('transactions');box.innerHTML='';if(!list.length){box.innerHTML='<div class="empty">لا توجد عمليات مطابقة حتى الآن.</div>';return}
-for(const r of list){const el=document.createElement('div');el.className='transaction';const info=document.createElement('div');info.className='txinfo';const name=document.createElement('div');name.className='txname';name.textContent=r.note||r.category;const meta=document.createElement('div');meta.className='txmeta';meta.textContent=`${r.date} · ${r.category} · ${r.wallet}`;const buttons=document.createElement('div');buttons.className='txbuttons';const eb=document.createElement('button');eb.className='secondary';eb.textContent='تعديل';eb.onclick=()=>edit(r.id);const db=document.createElement('button');db.className='danger';db.textContent='حذف';db.onclick=()=>remove(r.id);buttons.append(eb,db);info.append(name,meta,buttons);const val=document.createElement('div');val.className='txamount '+(r.kind==='income'?'green':'red');val.textContent=(r.kind==='income'?'+':'−')+money(r.amount);el.append(info,val);box.append(el)}
+const fmt=n=>new Intl.NumberFormat('ar-JO',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)+' د.أ';
+const uid=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);
+function loadData(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.wallets)&&Array.isArray(x.transactions))return x;}catch(e){}return structuredCloneSafe(defaults)}
+function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));return true}catch(e){alert('تعذر حفظ البيانات في المتصفح. صدّر نسخة احتياطية واحذف بعض بيانات المتصفح أو افتح التطبيق من متصفح يدعم التخزين.');return false}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function localDateInput(d=new Date()){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
+function displayDate(s){const d=new Date(s);return isNaN(d)?s:d.toLocaleString('ar-JO',{dateStyle:'medium',timeStyle:'short'})}
+function totals(){let inc=0,exp=0;for(const t of data.transactions){if(t.type==='income')inc+=Number(t.amount);else exp+=Number(t.amount)}return {inc,exp,balance:inc-exp}}
+function render(){
+ const t=totals();$('balance').textContent=fmt(t.balance);$('totalIncome').textContent=fmt(t.inc);$('totalExpense').textContent=fmt(t.exp);
+ const oldWallet=$('walletSelect').value;
+ $('walletSelect').innerHTML=data.wallets.map(w=>`<option value="${esc(w.id)}">${esc(w.name)}</option>`).join('');
+ if(data.wallets.some(w=>w.id===oldWallet))$('walletSelect').value=oldWallet;
+ const oldFilter=$('filterWallet').value;
+ $('filterWallet').innerHTML='<option value="all">كل المحافظ</option>'+data.wallets.map(w=>`<option value="${esc(w.id)}">${esc(w.name)}</option>`).join('');
+ if([...$('filterWallet').options].some(o=>o.value===oldFilter))$('filterWallet').value=oldFilter;
+ $('walletsSummary').innerHTML=data.wallets.map(w=>{let b=0;data.transactions.filter(x=>x.walletId===w.id).forEach(x=>b+=(x.type==='income'?1:-1)*Number(x.amount));return `<div class="wallet"><div><span>المحفظة</span><strong>${esc(w.name)}</strong></div><strong>${fmt(b)}</strong></div>`}).join('');
+ renderList();
 }
-$('search').addEventListener('input',render);$('filterKind').addEventListener('change',render);
-function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-$('exportJson').onclick=()=>download('expense-manager-backup.json',JSON.stringify({version:1,exportedAt:new Date().toISOString(),records},null,2),'application/json;charset=utf-8');
-$('exportCsv').onclick=()=>{const rows=[['التاريخ','النوع','المبلغ','التصنيف','المحفظة','الوصف'],...records.map(r=>[r.date,r.kind==='income'?'إيراد':'مصروف',r.amount,r.category,r.wallet,r.note])];const csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');download('expense-manager.csv',csv,'text/csv;charset=utf-8')};
-$('importFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());const arr=Array.isArray(data)?data:data.records;if(!Array.isArray(arr))throw Error();if(confirm('ستُستبدل العمليات الحالية بالنسخة المختارة. هل تريد المتابعة؟')){records=arr;persist();resetForm();alert('تمت استعادة النسخة.')}}catch(err){alert('تعذر قراءة الملف. اختر نسخة JSON صالحة من هذا التطبيق.')}e.target.value=''});
+function renderList(){
+ const q=$('search').value.trim().toLocaleLowerCase();
+ const typ=$('filterType').value,wid=$('filterWallet').value;
+ const txs=[...data.transactions].filter(x=>(typ==='all'||x.type===typ)&&(wid==='all'||x.walletId===wid)&&(!q||`${x.category} ${x.notes||''} ${walletName(x.walletId)}`.toLocaleLowerCase().includes(q))).sort((a,b)=>new Date(b.date)-new Date(a.date));
+ if(!txs.length){$('list').innerHTML='<div class="empty">لا توجد معاملات مطابقة حتى الآن.</div>';return}
+ $('list').innerHTML=txs.map(x=>`<article class="transaction"><div class="txmain"><div class="txline"><span class="tag">${esc(x.category)}</span><span class="txamount ${x.type==='income'?'income':'expense'}">${x.type==='income'?'+':'−'}${fmt(x.amount)}</span></div><div class="txmeta">${esc(walletName(x.walletId))} · ${esc(displayDate(x.date))}${x.notes?'<br>'+esc(x.notes):''}</div></div><div class="txbuttons"><button class="secondary" type="button" data-edit="${esc(x.id)}">تعديل</button><button class="danger" type="button" data-delete="${esc(x.id)}">حذف</button></div></article>`).join('');
+}
+function walletName(id){return data.wallets.find(w=>w.id===id)?.name||'محفظة محذوفة'}
+function resetForm(){$('editId').value='';$('txForm').reset();$('txDate').value=localDateInput();$('type').value='expense';$('saveTx').textContent='حفظ المعاملة';$('cancelEdit').classList.add('hidden')}
+$('txDate').value=localDateInput();
+$('txForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value),walletId=$('walletSelect').value,date=$('txDate').value;
+ if(!Number.isFinite(amount)||amount<=0){alert('أدخل مبلغًا أكبر من صفر.');return}
+ if(!data.wallets.some(w=>w.id===walletId)){alert('أضف محفظة أولًا.');return}
+ if(!date||isNaN(new Date(date).getTime())){alert('تحقق من التاريخ والوقت.');return}
+ const id=$('editId').value;
+ const item={id:id||uid(),type:$('type').value,amount:Number(amount.toFixed(3)),category:$('category').value,walletId,date:new Date(date).toISOString(),notes:$('notes').value.trim()};
+ if(id){const i=data.transactions.findIndex(x=>x.id===id);if(i>=0)data.transactions[i]=item}else data.transactions.push(item);
+ persist();resetForm();render();
+});
+$('cancelEdit').addEventListener('click',resetForm);
+$('list').addEventListener('click',e=>{const eb=e.target.closest('[data-edit]'),db=e.target.closest('[data-delete]');
+ if(eb){const x=data.transactions.find(t=>t.id===eb.dataset.edit);if(!x)return;$('editId').value=x.id;$('type').value=x.type;$('amount').value=x.amount;$('category').value=x.category;$('walletSelect').value=x.walletId;$('txDate').value=localDateInput(new Date(x.date));$('notes').value=x.notes||'';$('saveTx').textContent='حفظ التعديلات';$('cancelEdit').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+ if(db){const x=data.transactions.find(t=>t.id===db.dataset.delete);if(x&&confirm('هل تريد حذف هذه المعاملة؟')){data.transactions=data.transactions.filter(t=>t.id!==x.id);persist();render()}}
+});
+$('walletForm').addEventListener('submit',e=>{e.preventDefault();const name=$('walletName').value.trim();if(!name){alert('اكتب اسم المحفظة.');return}if(data.wallets.some(w=>w.name.toLocaleLowerCase()===name.toLocaleLowerCase())){alert('هذه المحفظة موجودة مسبقًا.');return}data.wallets.push({id:uid(),name});persist();$('walletName').value='';render()});
+['search','filterType','filterWallet'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',renderList));
+$('clearFilters').addEventListener('click',()=>{$('search').value='';$('filterType').value='all';$('filterWallet').value='all';renderList()});
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function stamp(){return new Date().toISOString().slice(0,10)}
+function backupBlob(snapshot=data){return new Blob([JSON.stringify({app:'مدير المصاريف المتقدم',version:1,exportedAt:new Date().toISOString(),data:snapshot},null,2)],{type:'application/json;charset=utf-8'})}
+$('backupBtn').addEventListener('click',()=>download(backupBlob(),`expense-backup-${stamp()}.json`));
+$('restoreBtn').addEventListener('click',()=>$('restoreFile').click());
+$('mergeBtn').addEventListener('click',()=>$('mergeFile').click());
+function readBackup(file){return file.text().then(txt=>{const obj=JSON.parse(txt),candidate=obj.data||obj;if(!Array.isArray(candidate.wallets)||!Array.isArray(candidate.transactions))throw Error('format');return candidate})}
+$('restoreFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const candidate=await readBackup(file);if(!confirm('سيتم أولًا تنزيل نسخة أمان من بيانات هذا التطبيق، ثم استبدال العمليات الحالية بمحتوى الملف المختار. احفظ النسخة التي ستُنزّلها في تطبيق «الملفات». هل تريد المتابعة؟'))return;download(backupBlob(),`expense-before-restore-${stamp()}.json`);data={version:1,wallets:candidate.wallets,transactions:candidate.transactions};if(!persist())throw Error('save');resetForm();render();alert('تمت الاستعادة. احتفظ بملف expense-before-restore كنسخة أمان.')}catch(err){alert('تعذرت قراءة الملف أو حفظ البيانات. لم تُستكمل الاستعادة. اختر نسخة JSON صادرة من هذا التطبيق.')}finally{e.target.value=''}});
+$('mergeFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const candidate=await readBackup(file);if(!confirm('سيتم إضافة العمليات غير الموجودة في هذا التطبيق، مع الاحتفاظ بالعمليات الحالية. يُنصح بحفظ نسخة احتياطية أولًا. هل تريد المتابعة؟'))return;const before=structuredCloneSafe(data);const walletMap={};for(const w of candidate.wallets){let existing=data.wallets.find(x=>String(x.name).trim().toLocaleLowerCase()===String(w.name).trim().toLocaleLowerCase());if(!existing){existing={id:uid(),name:String(w.name||'محفظة مستوردة')};data.wallets.push(existing)}walletMap[w.id]=existing.id}const ids=new Set(data.transactions.map(t=>String(t.id)));let added=0,skipped=0;for(const t of candidate.transactions){if(t.id!=null&&ids.has(String(t.id))){skipped++;continue}const newTx={...t,id:t.id!=null?String(t.id):uid(),walletId:walletMap[t.walletId]||data.wallets[0]?.id};if(!newTx.walletId){newTx.walletId=uid();data.wallets.push({id:newTx.walletId,name:'محفظة مستوردة'})}data.transactions.push(newTx);ids.add(String(newTx.id));added++}if(!persist()){data=before;throw Error('save')}render();alert(`اكتمل الدمج. أُضيفت ${added} عملية، وتم تجاوز ${skipped} عملية لها معرّف موجود مسبقًا.`)}catch(err){alert('تعذرت قراءة الملف أو حفظ البيانات. لم يكتمل الدمج. اختر نسخة JSON صادرة من هذا التطبيق.')}finally{e.target.value=''}});
+$('csvBtn').addEventListener('click',()=>{if(!data.transactions.length){alert('لا توجد معاملات لتصديرها.');return}const rows=[['م','التصنيف','النوع','المبلغ (د.أ)','المحفظة','التاريخ والوقت','ملاحظات'],...data.transactions.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map((x,i)=>[i+1,x.category,x.type==='income'?'إيراد':'مصروف',Number(x.amount),walletName(x.walletId),displayDate(x.date),x.notes||''])];const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');download(new Blob([csv],{type:'text/csv;charset=utf-8;'}),`expense-report-${stamp()}.csv`)});
+$('clearBtn').addEventListener('click',()=>{if(confirm('سيتم حذف جميع المعاملات نهائيًا من هذا المتصفح. احفظ نسخة احتياطية أولًا. هل تريد المتابعة؟')){data.transactions=[];persist();resetForm();render()}});
 render();
+})();
 </script>
-</body></html>
+</body>
+</html>
