@@ -1,0 +1,59 @@
+name: Validate integrated test branch
+
+on:
+  push:
+    branches:
+      - test/integrated-validation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-html-javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out test branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate inline JavaScript syntax
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Scripts(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.inside = False
+                  self.current = []
+                  self.scripts = []
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "script":
+                      self.inside = True
+                      self.current = []
+              def handle_data(self, data):
+                  if self.inside:
+                      self.current.append(data)
+              def handle_endtag(self, tag):
+                  if tag.lower() == "script" and self.inside:
+                      self.scripts.append("".join(self.current))
+                      self.inside = False
+
+          parser = Scripts()
+          parser.feed(Path("index.html").read_text(encoding="utf-8"))
+          inline = [s for s in parser.scripts if s.strip()]
+          if not inline:
+              raise SystemExit("No inline JavaScript found to validate")
+          Path("/tmp/expense-manager-inline.js").write_text("\n;\n".join(inline), encoding="utf-8")
+          print(f"Extracted {len(inline)} inline script block(s)")
+          PY
+          node --check /tmp/expense-manager-inline.js
+      - name: Confirm isolated test storage key
+        run: |
+          grep -q 'expenseManagerAdvanced.test.integratedValidation.v1' index.html
+          echo "Isolated test storage key confirmed"
